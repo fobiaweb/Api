@@ -4,11 +4,14 @@
     "description": "Fobia Api Component",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
         "fobiaweb/database": "*",
         "fobiaweb/php-helper-lib": "*",
         "fobiaweb/ezc-base": "1.8",
-        "fobiaweb/ezc-database": "~1"
+        "fobiaweb/ezc-database": "~1",
+        "symfony/console": "~2"
     },
     "autoload": {
          "classmap": [ "." ]

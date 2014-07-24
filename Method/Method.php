@@ -18,15 +18,15 @@ use Log;
 abstract class Method
 {
 
-    const VALUE_NONE     = 1;
+    const VALUE_NONE     = 0;
     /**
      * Обязательно
      */
-    const VALUE_REQUIRED = 2;
+    const VALUE_REQUIRED = 1;
     /**
      * Опционально
      */
-    const VALUE_OPTIONAL = 4;
+    const VALUE_OPTIONAL = 2;
 
 
     private $params;
@@ -167,7 +167,7 @@ abstract class Method
 
         $args = array();
         foreach ($definition as $key => $value) {
-            if (key_exists($key, $params)) {
+            if (array_key_exists($key, $params)) {
                 $args[$key] = $params[$key];
             } else {
                 if ($value['default'] !== null) {
@@ -228,16 +228,34 @@ abstract class Method
             $name = $options['name'];
             unset($options['name']);
         }
+
+        $name = trim($name);
+        if (!$name) {
+            throw new \RuntimeException("Не указано имя параметра метода");
+        }
+
+        // Если параметр определяеться впервые
         if (!array_key_exists($name, $this->definition)) {
             $options_default = array(
-                'mode' => self::VALUE_NONE,
+                'mode'    => self::VALUE_NONE,
                 'default' => null,
-                'parse' => null,// array(),
-                'assert' => null, // array(),
+                'parse'   => null,  // array(),
+                'assert'  => null,  // array(),
             );
-        } else {
+            // Если поле обязательно и нет проверок, устанавливаем проверку на
+            // кол. символов
+            if ($options['mode'] == self::VALUE_REQUIRED
+                    && !array_key_exists('assert', $options)) {
+                $options['assert'] = 'strlen';
+            }
+            // Если нет преобразований - устанавливаем 'trim'
+            if (!array_key_exists('parse', $options)) {
+                $options['parse'] = 'trim';
+            }
+        } else { // Если параметр уже имееться, переопределяем опции
             $options_default = $this->definition[$name];
         }
+
         $this->definition[$name] = array_merge($options_default, $options);
     }
 

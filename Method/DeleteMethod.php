@@ -24,7 +24,7 @@ abstract class DeleteMethod extends Method
     {
         $p = $this->getDefinitionParams();
 
-        $db = \App::Db();
+        $db = \ezcDbInstance::get();
         $q = $db->createDeleteQuery();
         $q->deleteFrom($this->tableName);
         $q->where($q->expr->eq($this->idName, $db->quote($p[$this->idName])));

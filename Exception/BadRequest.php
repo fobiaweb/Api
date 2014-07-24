@@ -16,7 +16,7 @@ namespace Api\Exception;
  *
  * @package   Api.Exception
  */
-class BadRequest extends Error
+class BadRequest extends Error implements ApiException
 {
     /**
      * 

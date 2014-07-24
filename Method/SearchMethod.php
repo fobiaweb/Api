@@ -29,7 +29,7 @@ abstract class SearchMethod extends Method
         $this->setDefinition(array(
             'name' => 'limit',
             'mode' => Method::VALUE_OPTIONAL,
-            'default' => 100,
+            'default' => 10,
         ));
         $this->setDefinition(array(
             'name' => 'offset',

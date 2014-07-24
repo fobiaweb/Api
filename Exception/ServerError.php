@@ -13,7 +13,7 @@ namespace Api\Exception;
  *
  * @package   Api.Exception
  */
-class ServerError extends Error
+class ServerError extends Error implements ApiException
 {
     public function __construct($message = null)
     {

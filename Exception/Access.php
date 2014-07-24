@@ -13,7 +13,7 @@ namespace Api\Exception;
  *
  * @package   Api\Exception
  */
-class Access extends Error
+class Access extends Error implements ApiException
 {
     public function __construct($access)
     {

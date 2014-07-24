@@ -54,11 +54,11 @@ class ApiCreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
-        $html = $this->template($name);
+        //$html = $this->template($name);
 
-        if ($template = $this->getOption('template')) {
+        if ($template = $input->getOption('template')) {
             if (!file_exists($template)) {
-                throw new Exception('aaaaaaaaaaaaaaaaaa');
+                throw new \Exception('aaaaaaaaaaaaaaaaaa');
             }
         }
         

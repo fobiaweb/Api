@@ -8,12 +8,13 @@
     },
     "require-dev": {
         "fobiaweb/database": "*",
-        "fobiaweb/php-helper-lib": "*",
+        "fobiaweb/php-helper-lib": "dev-master",
         "fobiaweb/ezc-base": "1.8",
         "fobiaweb/ezc-database": "~1",
         "symfony/console": "~2"
     },
     "autoload": {
+         "psr-0": { "Fobia\\Auth\\": "" },
          "classmap": [ "." ]
     },
     "suggest": {

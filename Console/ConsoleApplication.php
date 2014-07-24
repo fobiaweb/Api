@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * @package Console.FobiaApplication
  */
-class ConsoleApplication  extends Application
+class ConsoleApplication extends Application
 {
 
     protected function getDefaultInputDefinition()

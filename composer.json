@@ -4,7 +4,11 @@
     "description": "Fobia Api Component",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "fobiaweb/database": "*",
+        "fobiaweb/php-helper-lib": "*",
+        "fobiaweb/ezc-base": "1.8",
+        "fobiaweb/ezc-database": "~1"
     },
     "autoload": {
          "classmap": [ "." ]

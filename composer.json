@@ -14,7 +14,7 @@
         "symfony/console": "~2"
     },
     "autoload": {
-         "psr-0": { "Fobia\\Auth\\": "" },
+         "psr-0": { "Api\\": "" },
          "classmap": [ "." ]
     },
     "suggest": {

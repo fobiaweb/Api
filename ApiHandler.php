@@ -13,7 +13,7 @@ use Fobia\Debug\Log;
 /**
  * ApiHandler class
  *
- * @package   Api
+ * @package   Fobia.Api
  */
 class ApiHandler
 {
@@ -51,22 +51,24 @@ class ApiHandler
             $map = array('object', $this->getClass($method));
         }
 
-        switch ($map[0]) {
-            case 'file':
-                $result = $this->executeFile($map[1], $p);
-                break;
-            case 'callable':
-                $args = $map;
-                array_shift($args);
-                array_shift($args);
-                $result = $this->executeCallable($map[1], $p, $args);
-                break;
-            case 'object':
-                $args = $map;
-                array_shift($args);
-                array_shift($args);
-                $result = $this->executeObject($map[1], $p, $args);
-                break;
+        try {
+            switch ($map[0]) {
+                case 'file':
+                    $result = $this->executeFile($map[1], $p);
+                    break;
+                case 'callable':
+                    $args = array_slice($map, 2);
+                    $result = $this->executeCallable($map[1], $p, $args);
+                    break;
+                case 'object':
+                    $args = array_slice($map, 2);
+                    $result = $this->executeObject($map[1], $p, $args);
+                    break;
+                default :
+                    throw new \Exception("none type");
+            }
+        } catch (\Exception $exc) {
+            
         }
 
         /*

@@ -13,7 +13,7 @@ use Fobia\Debug\Log;
 /**
  * Method class
  *
- * @package   Api.Method
+ * @package   Fobia.Api.Method
  */
 abstract class Method
 {

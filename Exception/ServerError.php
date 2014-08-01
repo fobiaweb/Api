@@ -11,9 +11,9 @@ namespace Fobia\Api\Exception;
 /**
  * ServerError class
  *
- * @package   Api.Exception
+ * @package   Fobia.Api.Exception
  */
-class ServerError extends Error implements ApiException
+class ServerError extends Error implements IApiException
 {
     public function __construct($message = null)
     {

@@ -18,7 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 /**
  * ApiSearchCommand class
  *
- * @package   
+ * @package   Fobia.Api.Console.Command
  */
 class ApiSearchCommand extends Command
 {

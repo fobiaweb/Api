@@ -13,7 +13,7 @@ use Fobia\Api\Method\Method;
 /**
  * SearchMethod class
  *
- * @package   Api.Method
+ * @package   Fobia.Api.Method
  */
 abstract class SearchMethod extends Method
 {

@@ -14,9 +14,9 @@ namespace Fobia\Api\Exception;
  * Исключение характерезуещее немедленый выход из обработки метода,
  * и формирует результат успешного выполнения
  *
- * @package   Api.Exception
+ * @package   Fobia.Api.Exception
  */
-interface ApiException
+interface IApiException
 {
 
 }

@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * FobiaApplication class
  *
- * @package Console.FobiaApplication
+ * @package Fobia.Api.Console.FobiaApplication
  */
 class ConsoleApplication extends Application
 {

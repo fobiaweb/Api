@@ -11,9 +11,9 @@ namespace Fobia\Api\Exception;
 /**
  * Exception_Error class
  *
- * @package   Api.Exception
+ * @package   Fobia.Api.Exception
  */
-class Error extends \Exception
+class Error extends \Exception implements IApiException
 {
 }
 

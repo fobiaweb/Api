@@ -18,7 +18,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 /**
  * ApiCreateCommand class
  *
- * @package   Console\Command
+ * @package   Fobia.Api.Console.Command
  */
 class ApiCreateCommand extends Command
 {

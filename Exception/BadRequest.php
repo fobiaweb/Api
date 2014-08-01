@@ -14,9 +14,9 @@ namespace Fobia\Api\Exception;
  * Исключение возникает в случае неверно переданых параметров,
  * и генерирует ошибку в Api методе
  *
- * @package   Api.Exception
+ * @package   Fobia.Api.Exception
  */
-class BadRequest extends Error implements ApiException
+class BadRequest extends Error implements IApiException
 {
     /**
      * 

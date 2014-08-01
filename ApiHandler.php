@@ -48,15 +48,28 @@ class ApiHandler
         if (array_key_exists($method, $this->apimap)) {
             $map = $this->apimap[$method];
         } else {
-            $class = $this->getClass($method);
-            $classMethod = 'invoke';
-            $map = array();
+            $map = array('object', $this->getClass($method));
         }
 
-        if ($type == 'file') {
-            include_once $map[1];
+        switch ($map[0]) {
+            case 'file':
+                $result = $this->executeFile($map[1], $p);
+                break;
+            case 'callable':
+                $args = $map;
+                array_shift($args);
+                array_shift($args);
+                $result = $this->executeCallable($map[1], $p, $args);
+                break;
+            case 'object':
+                $args = $map;
+                array_shift($args);
+                array_shift($args);
+                $result = $this->executeObject($map[1], $p, $args);
+                break;
         }
 
+        /*
         if ( ! class_exists($class) || ! method_exists( $class,  $classMethod)) {
             return array(
                 'error' => array(
@@ -72,6 +85,7 @@ class ApiHandler
         $obj->ignoreValidationErrors();
         dispatchMethod($obj, $classMethod, $map);
         return $obj->getFormatResponse();
+        */
     }
 
     /**
@@ -111,7 +125,7 @@ class ApiHandler
             $p = array($p);
         }
 
-        return include_once $file[1];
+        return include $file;
     }
 
     protected function executeObject($class, $p, array $args = array())
@@ -121,7 +135,7 @@ class ApiHandler
             $method = "invoke";
         }
 
-        $obj = new $class($p);
+        $obj = new $class($p, $args);
         return $class->$method();
     }
 

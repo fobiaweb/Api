@@ -11,7 +11,7 @@ $_ENV['no_stderr'] = true;
 require_once __DIR__ . '/vendor/autoload.php';
 
 
-use Api\Console\ConsoleApplication;
+use Fobia\Api\Console\ConsoleApplication;
 
 $application = new ConsoleApplication();
 $application->add(new Api\Console\Command\ApiCreateCommand());

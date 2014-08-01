@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2014 Dmitriy Tyurin
  */
 
- use Api\Method\Method;
+ use Fobia\Api\Method\Method;
 
 /**
  * Метод '{{name}}' 

@@ -6,7 +6,7 @@
  * @copyright  Copyright (c) 2014 Dmitriy Tyurin
  */
 
-namespace Api\Exception;
+namespace Fobia\Api\Exception;
 
 /**
  * Exception_Error class

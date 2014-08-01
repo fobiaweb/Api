@@ -6,9 +6,9 @@
  * @copyright  Copyright (c) 2014 Dmitriy Tyurin
  */
 
-namespace Api\Method;
+namespace Fobia\Api\Method;
 
-use Log;
+use Fobia\Debug\Log;
 
 /**
  * Method class

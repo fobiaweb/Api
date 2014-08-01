@@ -6,9 +6,9 @@
  * @copyright  Copyright (c) 2014 Dmitriy Tyurin
  */
 
-namespace Api;
+namespace Fobia\Api;
 
-use Log;
+use Fobia\Debug\Log;
 
 /**
  * ApiHandler class

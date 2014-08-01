@@ -48,7 +48,7 @@ abstract class Method
     {
         $this->params = (array) $params;
         $this->definition = array();
-        $this->options = $options;
+        $this->options = (array) $options;
 
         $this->configure();
     }
@@ -76,7 +76,11 @@ abstract class Method
         $r = null;
         try {
             $this->initialize();
-            $this->dispatchMethod('execute', func_get_args());
+            $execute = $this->getOptions('execute');
+            if (!$execute) {
+                $execute = 'execute';
+            }
+            $this->dispatchMethod($execute, func_get_args());
         } catch (\Api\Exception\Halt $exc) {
             // Halt
         } catch (\Api\Exception\Error $exc) {
@@ -290,9 +294,12 @@ abstract class Method
      *
      * @return mixed
      */
-    protected function getOptions()
+    protected function getOptions($name = null)
     {
-        return $this->options;
+        if ($name === null) {
+            return $this->options;
+        }
+        return $this->options[$name];
     }
 
     /**

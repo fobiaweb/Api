@@ -58,18 +58,26 @@ class ApiHandler
                     $result = $this->executeFile($method, $map[1], $p);
                     break;
                 case 'callable':
-                    $args = array_slice($map, 2);
+                    $args = (array) $map[2];
                     $result = $this->executeCallable($map[1], $p, $args);
                     break;
                 case 'object':
-                    $args = array_slice($map, 2);
+                    $args = (array) $map[2];
                     $result = $this->executeObject($map[1], $p, $args);
                     break;
                 default :
                     throw new \Exception("none type");
             }
         } catch (\Exception $exc) {
-            
+            return array(
+                'error' => array(
+                    'err_msg'  => 'неизвестный метод',
+                    'err_code' => 0,
+                    'method'   =>  $method,
+                    'params'   =>  $params,
+                    'err_treace' => $exc->getMessage()
+                )
+            );
         }
 
         /*
@@ -149,9 +157,6 @@ class ApiHandler
 
     protected function executeCallable($callable, $p, array $args = array())
     {
-        if (!is_array($args)) {
-            $args = array();
-        }
         array_unshift($args, $p);
         return call_user_func_array($callable, $args);
     }

@@ -29,7 +29,7 @@ class ApiCreateCommand extends Command
     protected function defaultConfigure()
     {
         $this->dir = 'app/Api';
-        $this->template = dirname(__DIR__) . '/default.tpl';
+        $this->template = dirname(__DIR__) . '/default-class.tpl';
     }
 
     protected function configure()

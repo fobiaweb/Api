@@ -136,7 +136,7 @@ class ApiHandler
         }
 
         $obj = new $class($p, $args);
-        return $class->$method();
+        return $obj->$method();
     }
 
     protected function executeCallable($callable, $p, array $args = array())

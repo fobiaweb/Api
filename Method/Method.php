@@ -30,6 +30,7 @@ abstract class Method
 
 
     private $params;
+    private $options;
     private $definition;
     private $definitionMergedWithArgs;
     private $ignoreValidationErrors = false;
@@ -43,10 +44,11 @@ abstract class Method
     /**
      * @internal
      */
-    public function __construct($params = null)
+    public function __construct($params = null, $options = null)
     {
         $this->params = (array) $params;
         $this->definition = array();
+        $this->options = $options;
 
         $this->configure();
     }
@@ -269,6 +271,11 @@ abstract class Method
             return $this->definition[$name];
         }
         return $this->definition;
+    }
+
+    protected function getOptions()
+    {
+        return $this->options;
     }
 
     /**

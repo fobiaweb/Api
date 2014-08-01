@@ -14,6 +14,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Fobia\Api\Console\ConsoleApplication;
 
 $application = new ConsoleApplication();
-$application->add(new Api\Console\Command\ApiCreateCommand());
-$application->add(new Api\Console\Command\ApiSearchCommand());
+$application->add(new Fobia\Api\Console\Command\ApiCreateCommand());
+$application->add(new Fobia\Api\Console\Command\ApiSearchCommand());
 $application->run();

@@ -35,7 +35,7 @@ class ApiCreateCommand extends Command
     protected function configure()
     {
         $this->defaultConfigure();
-        
+
         // Arguments
         $this
                 ->setName('api:create')
@@ -61,14 +61,21 @@ class ApiCreateCommand extends Command
                 throw new \Exception('aaaaaaaaaaaaaaaaaa');
             }
         }
-        
+
+
+
 
 
         $dir = $input->getOption('output');
-        if ($dir) {
+
+        $html = $this->template($name, $this->template);
+        echo $html;
+
+        /*
             $path = explode('.', $name);
             array_pop($path);
             $path = SYSPATH . '/app/Api/' . implode('/', $path);
+
             @mkdir($path, 0777, true);
 
             $file = $path . '/' . $name . '.php';
@@ -79,13 +86,11 @@ class ApiCreateCommand extends Command
             if(!file_put_contents($file , $html)) {
                 $output->writeln('<error>Не удалось записать файл<error>');
             }
-        } else {
-            print_r($html);
-        }
+        /* */
     }
 
 
-    protected function template($name)
+    protected function template($name, $template)
     {
         // Первые символы после точки в верхний регистр
         $class = preg_replace_callback('/^\w|\.\w/', function ($matches) {
@@ -95,7 +100,7 @@ class ApiCreateCommand extends Command
         $class   = 'Api_' . str_replace('.', '_', $class);
 
         // Загружаем шаблон
-        $content = file_get_contents($this->dir . '/default.tpl');
+        $content = file_get_contents($template);
 
         // Производим замену
         $content = preg_replace(array('/{{name}}/', '/{{classname}}/'),

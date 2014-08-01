@@ -111,10 +111,10 @@ class ApiHandler
             $p = array($p);
         }
 
-        return include_once $map[1];
+        return include_once $file[1];
     }
 
-    protected function executeObject($class, $p, $args = null)
+    protected function executeObject($class, $p, array $args = array())
     {
         list($class, $method) = explode(":", $class);
         if (!$method) {
@@ -125,7 +125,7 @@ class ApiHandler
         return $class->$method();
     }
 
-    protected function executeCallable($callable, $p, $args = null)
+    protected function executeCallable($callable, $p, array $args = array())
     {
         if (!is_array($args)) {
             $args = array();

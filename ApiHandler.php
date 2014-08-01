@@ -77,7 +77,7 @@ class ApiHandler
                     }
                     break;
                 default :
-                    throw new \Exception("none type");
+                    throw new \Fobia\Api\Exception\Error("none type");
             }
         } catch (\Exception $exc) {
             return array(

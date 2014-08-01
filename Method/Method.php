@@ -81,13 +81,13 @@ abstract class Method
                 $execute = 'execute';
             }
             $this->dispatchMethod($execute, func_get_args());
-        } catch (\Api\Exception\Halt $exc) {
+        } catch (\Fobia\Api\Exception\Halt $exc) {
             // Halt
-        } catch (\Api\Exception\Error $exc) {
+        } catch (\Fobia\Api\Exception\Error $exc) {
             $this->exc = $exc;
         } catch (\Exception $exc) {
             Log::error("[API]:: Неизвестная ошибка (" . get_class($exc) . ") " . $exc->getMessage());
-            $this->exc = new \Api\Exception\Error("Неизвестная ошибка. (" . get_class($exc) . ")" );
+            $this->exc = new \Fobia\Api\Exception\Error("Неизвестная ошибка. (" . get_class($exc) . ")" );
         }
 
         if ($this->exc) {
@@ -138,7 +138,8 @@ abstract class Method
                 'err_msg'  => $this->exc->getMessage(),
                 'err_code' => $this->exc->getCode(),
                 'method'   => $this->getName(),
-                'params'   => $this->params
+                'params'   => $this->params,
+                'err_treace' => $this->exc->getTraceAsString()
             );
         } else {
             return null;
@@ -179,7 +180,7 @@ abstract class Method
                 if ($value['default'] !== null) {
                     $args[$key] = $value['default'];
                 } else if ($value['mode'] == self::VALUE_REQUIRED) {
-                    throw new \Api\Exception\BadRequest($key);
+                    throw new \Fobia\Api\Exception\BadRequest($key);
                 }
                 continue;
             }
@@ -197,20 +198,20 @@ abstract class Method
                 if (is_callable($cb)) {
                     $args[$key] = call_user_func_array($cb, $callback_args);
                 } else {
-                    throw new \Api\Exception\ServerError('Не верный формат callable - ' . $cb);
+                    throw new \Fobia\Api\Exception\ServerError('Не верный формат callable - ' . $cb);
                 }
             }
 
             foreach ( (array) $value['assert'] as $cb) {
                 if (is_callable($cb)) {
                     if( !call_user_func_array($cb, array($args[$key])) ) {
-                        throw new \Api\Exception\BadRequest($key);
+                        throw new \Fobia\Api\Exception\BadRequest($key);
                     }
                     // if ( ! $cb($args[$key]) ) {
                     //     throw new \Api\Exception\BadRequest($key);
                     // }
                 } else {
-                    throw new \Api\Exception\ServerError('Не верный формат callable - ' . $cb);
+                    throw new \Fobia\Api\Exception\ServerError('Не верный формат callable - ' . $cb);
                 }
             }
         }

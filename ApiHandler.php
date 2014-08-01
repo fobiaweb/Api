@@ -44,14 +44,17 @@ class ApiHandler
     {
         $params = (array) $params;
 
+        // Ищем в определениях
         if (array_key_exists($method, $this->apimap)) {
             $map = $this->apimap[$method];
-            $class = array_shift($map);
-            $classMethod = array_shift($map);
         } else {
             $class = $this->getClass($method);
             $classMethod = 'invoke';
             $map = array();
+        }
+
+        if ($type == 'file') {
+            include_once $map[1];
         }
 
         if ( ! class_exists($class) || ! method_exists( $class,  $classMethod)) {
@@ -100,5 +103,34 @@ class ApiHandler
         }
 
         return $class;
+    }
+
+    protected function executeFile($file, $p)
+    {
+        if (!is_array($p)) {
+            $p = array($p);
+        }
+
+        return include_once $map[1];
+    }
+
+    protected function executeObject($class, $p, $args = null)
+    {
+        list($class, $method) = explode(":", $class);
+        if (!$method) {
+            $method = "invoke";
+        }
+
+        $obj = new $class($p);
+        return $class->$method();
+    }
+
+    protected function executeCallable($callable, $p, $args = null)
+    {
+        if (!is_array($args)) {
+            $args = array();
+        }
+        array_unshift($args, $p);
+        return call_user_func_array($callable, $args);
     }
 }

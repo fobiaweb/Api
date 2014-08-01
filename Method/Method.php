@@ -26,7 +26,7 @@ abstract class Method
     /**
      * Опционально
      */
-    const VALUE_OPTIONAL = 2;
+    const VALUE_ARRAY    = 2;
 
 
     private $params;

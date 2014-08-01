@@ -21,4 +21,25 @@ $api = new Api_Object_Name($params);
     $result = $api();
 
 Обращение к объекту как к фунции вызовит последовательность вышеперечисленый действий
->>>>>>> tmp
+
+
+## map
+
+```php
+$map = array(
+    'users.create' => array('file',     '/path/to/file.php'),
+    'users.search' => array('callable', {closure} ),
+    'users.delete' => array('object',   'ClassName:method', 'arg1', arg2... ),
+);
+```
+
+__file__
+
+Подключаеться файл с переменой ``$p`` - переданные параметры
+
+
+__callable__
+
+Вызаваеться функция, передавая ``$p`` в качестве параметра
+
+

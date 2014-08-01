@@ -48,6 +48,7 @@ class ApiHandler
         if (array_key_exists($method, $this->apimap)) {
             $map = $this->apimap[$method];
         } else {
+            Log::notice("[API]:: Method '{$method}' not in map. Start search method class.");
             $map = array('object', $this->getClass($method));
         }
 
@@ -102,8 +103,8 @@ class ApiHandler
             return strtoupper($matches[0]);
         }, str_replace('.', '_', $method));
 
-        if ( ! class_exists($class) && $autoload) {
-            Log::warning("Class '$class' not autoloaded");
+        if ( ! class_exists($class) && $this->classDirectory && $autoload ) {
+            Log::warning("[API]:: Class '$class' not autoloaded");
             $list = explode('.', $method);
             array_pop($list);
             array_push($list, $method);
@@ -114,7 +115,7 @@ class ApiHandler
             }
 
             if ( ! class_exists($class) ) {
-                Log::error("Class '$class' not exists.");
+                Log::error("[API]:: Class '$class' not exists.");
             }
         }
 

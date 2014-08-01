@@ -37,7 +37,8 @@ abstract class SearchMethod extends Method
         $this->setDefinition(array(
             'name' => 'fields',
             'default' => array('id'),
-            'parse' => 'parseFields'
+            'parse' => 'parseFields',
+            'assert' => array()
         ));
         $this->setDefinition(array(
             'name' => 'sort',
@@ -66,7 +67,7 @@ abstract class SearchMethod extends Method
     protected function parseName($name)
     {
         $name = strtolower($name);
-        
+
         $eng = array("yo", "ts", "ch", "sh", "shch", "yu", "ya", "h");
         $rus = array("е", "ц", "ч", "ш", "щ", "ю", "я", "х");
         $name = str_replace($eng, $rus, $name);

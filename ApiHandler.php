@@ -54,7 +54,7 @@ class ApiHandler
         try {
             switch ($map[0]) {
                 case 'file':
-                    $result = $this->executeFile($map[1], $p);
+                    $result = $this->executeFile($method, $map[1], $p);
                     break;
                 case 'callable':
                     $args = array_slice($map, 2);
@@ -121,13 +121,18 @@ class ApiHandler
         return $class;
     }
 
-    protected function executeFile($file, $p)
+    protected function executeFile($method, $file, $p)
     {
         if (!is_array($p)) {
             $p = array($p);
         }
-
-        return include $file;
+        $options = array(
+            'file' => $file,
+            'name' => $method
+        );
+        $class = new \Fobia\Api\Method\FileMethod($p, $options);
+        $class->invoke();
+        return $class->getFormatResponse();
     }
 
     protected function executeObject($class, $p, array $args = array())

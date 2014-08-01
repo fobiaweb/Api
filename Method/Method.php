@@ -196,11 +196,15 @@ abstract class Method
                     throw new \Api\Exception\ServerError('Не верный формат callable - ' . $cb);
                 }
             }
-            foreach ((array) $value['assert'] as $cb) {
+
+            foreach ( (array) $value['assert'] as $cb) {
                 if (is_callable($cb)) {
-                    if ( ! $cb($args[$key])) {
+                    if( !call_user_func_array($cb, array($args[$key])) ) {
                         throw new \Api\Exception\BadRequest($key);
                     }
+                    // if ( ! $cb($args[$key]) ) {
+                    //     throw new \Api\Exception\BadRequest($key);
+                    // }
                 } else {
                     throw new \Api\Exception\ServerError('Не верный формат callable - ' . $cb);
                 }
@@ -223,12 +227,19 @@ abstract class Method
      * @param string $name
      * @param array $options
      */
-    protected function setDefinition($name, array $options = array())
+    protected function setDefinition($name, $options = array())
     {
         if (is_array($name)) {
             $options = $name;
             $name = $options['name'];
             unset($options['name']);
+        } elseif ($options === null) {
+            unset($this->definition[$name]);
+            return;
+        } else {
+            if (!is_array($options)) {
+                $options = array();
+            }
         }
 
         $name = trim($name);
@@ -263,6 +274,7 @@ abstract class Method
 
     /**
      * Список определений параметров метода
+     *
      * @return array
      */
     public function getDefinition($name = null)
@@ -273,6 +285,11 @@ abstract class Method
         return $this->definition;
     }
 
+    /**
+     * Опции объекта
+     *
+     * @return mixed
+     */
     protected function getOptions()
     {
         return $this->options;
@@ -280,6 +297,7 @@ abstract class Method
 
     /**
      * Обработаные параметры
+     *
      * @return array
      */
     protected function getDefinitionParams()
@@ -289,6 +307,7 @@ abstract class Method
 
     /**
      * Переданые параметры
+     *
      * @return array
      */
     protected function getParams()

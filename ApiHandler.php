@@ -52,18 +52,29 @@ class ApiHandler
             $map = array('object', $this->getClass($method));
         }
 
+        $options = @$map[2];
+        if(!is_array($options)) {
+            $options = array();
+        }
+        $options["name"] = $method;
+        
+        $class = null;
+        $invoke = "invoke";
         try {
             switch ($map[0]) {
                 case 'file':
-                    $result = $this->executeFile($method, $map[1], $p);
+                    $class = "\\Fobia\\Api\\Method\\FileMethod";
+                    $options["file"] = $map[1];
                     break;
                 case 'callable':
-                    $args = (array) $map[2];
-                    $result = $this->executeCallable($map[1], $p, $args);
+                    $class = "\\Fobia\\Api\\Method\\CallableMethod";
+                    $options["callable"] = $map[1];
                     break;
                 case 'object':
-                    $args = (array) $map[2];
-                    $result = $this->executeObject($map[1], $p, $args);
+                    list($class, $invoke) = explode(":", $map[1]);
+                    if (!$invoke) {
+                        $invoke = "invoke";
+                    }
                     break;
                 default :
                     throw new \Exception("none type");
@@ -80,23 +91,11 @@ class ApiHandler
             );
         }
 
-        /*
-        if ( ! class_exists($class) || ! method_exists( $class,  $classMethod)) {
-            return array(
-                'error' => array(
-                    'err_msg'  => 'неизвестный метод',
-                    'err_code' => 0,
-                    'method'   =>  $method,
-                    'params'   =>  $params
-                )
-            );
-        }
-
-        $obj = new $class($params);
+        $obj = new $class($params, $options);
         $obj->ignoreValidationErrors();
-        dispatchMethod($obj, $classMethod, $map);
+        $obj->$invoke();
+
         return $obj->getFormatResponse();
-        */
     }
 
     /**
@@ -126,38 +125,7 @@ class ApiHandler
                 Log::error("[API]:: Class '$class' not exists.");
             }
         }
-
+        // Log::debug("[API]:: Class '$class'");
         return $class;
-    }
-
-    protected function executeFile($method, $file, $p)
-    {
-        if (!is_array($p)) {
-            $p = array($p);
-        }
-        $options = array(
-            'file' => $file,
-            'name' => $method
-        );
-        $class = new \Fobia\Api\Method\FileMethod($p, $options);
-        $class->invoke();
-        return $class->getFormatResponse();
-    }
-
-    protected function executeObject($class, $p, array $args = array())
-    {
-        list($class, $method) = explode(":", $class);
-        if (!$method) {
-            $method = "invoke";
-        }
-
-        $obj = new $class($p, $args);
-        return $obj->$method();
-    }
-
-    protected function executeCallable($callable, $p, array $args = array())
-    {
-        array_unshift($args, $p);
-        return call_user_func_array($callable, $args);
     }
 }

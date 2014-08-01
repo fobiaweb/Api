@@ -47,7 +47,7 @@ $method = new Api_Object_Name($params, $options);
 
 ```php
 $map = array(
-    'users.create' => array('file',     '/path/to/file.php'),
+    'users.create' => array('file',     '/path/to/file.php', array(... )),
     'users.search' => array('callable', {closure}, array(... ) ),
     'users.delete' => array('object',   'ClassName:method', array(... )
 );

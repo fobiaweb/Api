@@ -2,7 +2,7 @@
 /**
  * This file is part of API.
  *
- * FileMethod.php file
+ * CallableMethod.php file
  *
  * @author     Dmitriy Tyurin <fobia3d@gmail.com>
  * @copyright  Copyright (c) 2014 Dmitriy Tyurin
@@ -13,18 +13,18 @@ namespace Fobia\Api\Method;
 use Fobia\Api\Method\Method;
 
 /**
- * FileMethod class
+ * CallableMethod class
  *
  * @package   Fobia.Api.Method
  */
-class FileMethod extends Method
+class CallableMethod extends Method
 {
-    protected $file;
+    protected $callable;
 
     protected function configure()
     {
         $options = $this->getOptions();
-        $this->file = $options['file'];
+        $this->file = $options['callable'];
 
         $this->setName($options['name']);
     }
@@ -35,8 +35,7 @@ class FileMethod extends Method
         $app = \App::instance();
         $db  = $app->db;
 
-        include $this->file;
-
-        $this->response = 1;
+        $args = array($p);
+        $this->response = call_user_func_array($callable, $args);
     }
 }

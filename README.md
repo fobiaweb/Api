@@ -4,11 +4,15 @@
 php App Api
 
 
-$api = new Api_Object_Name($params);
+$method = new Api_Object_Name($params, $options);
+
+
+При создании объекта в конструкторе запускаеться ``$this->configure()``, где и определяються свойства параметров метода.
+
 
 Для выполнения метода и получения результата, выполните след.:
 
-    $api->invoke();
+    $method->invoke();
     if ($error = $api->errorInfo) {
         $result = $error;
     } else {
@@ -18,9 +22,25 @@ $api = new Api_Object_Name($params);
 
 Эти действия можно выполнить короче
 
-    $result = $api();
+    $result = $method();
 
 Обращение к объекту как к фунции вызовит последовательность вышеперечисленый действий
+
+## Core
+
+Меотд вызываеться путем
+    
+    $method->invoke();
+
+функция инициализирует ``$this->initialize();`` параметры метода и запускает ``$method->execute()``, где и происходит вcя логика метотода. Все действия обернуты обработкой исключений. Т.Е. в крации можно представить:
+
+    function invoke() {
+        try {
+            $this->initialize();
+            $this->execute();
+        } catch (\Exception $exc) {}
+    }
+
 
 
 ## map

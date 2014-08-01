@@ -35,8 +35,6 @@ class FileMethod extends Method
         $app = \App::instance();
         $db  = $app->db;
 
-        include $this->file;
-
-        $this->response = 1;
+        $this->response = include $this->file;
     }
 }

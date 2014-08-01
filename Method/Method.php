@@ -46,9 +46,9 @@ abstract class Method
      */
     public function __construct($params = null, $options = null)
     {
-        $this->params = (array) $params;
+        $this->params     = (array) $params;
         $this->definition = array();
-        $this->options = (array) $options;
+        $this->options    = (array) $options;
 
         $this->configure();
     }

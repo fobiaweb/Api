@@ -19,23 +19,26 @@ use Fobia\Api\Method\Method;
  */
 class CallableMethod extends Method
 {
+
+    /**
+     * @var \CCallback
+     */
     protected $callable;
+
+    public function __construct($callable, $params = null, $options = null)
+    {
+        $this->callable = new \CCallback($callable);
+
+        parent::__construct($params, $options);
+    }
 
     protected function configure()
     {
-        $options = $this->getOptions();
-        $this->file = $options['callable'];
 
-        $this->setName($options['name']);
     }
 
     protected function execute()
     {
-        $p   = $this->getDefinitionParams();
-        $app = \App::instance();
-        $db  = $app->db;
-
-        $args = array($p);
-        $this->response = call_user_func_array($callable, $args);
+        $this->response = $this->callable->invoke($this->getParams());
     }
 }

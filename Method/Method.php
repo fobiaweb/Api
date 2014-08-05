@@ -37,6 +37,12 @@ abstract class Method
     private $name;
 
     /**
+     *
+     * @var \Fobia\Api\Exception\Error
+     */
+    public $exc;
+
+    /**
      * @var mixed результат
      */
     protected $response;
@@ -49,6 +55,10 @@ abstract class Method
         $this->params     = (array) $params;
         $this->definition = array();
         $this->options    = (array) $options;
+        
+        if ($this->options['name']) {
+            $this->name = $this->options['name'];
+        }
 
         $this->configure();
     }
@@ -88,7 +98,10 @@ abstract class Method
         } catch (\Exception $exc) {
             Log::error("[API]:: Неизвестная ошибка (" . get_class($exc) . ") " . $exc->getMessage());
             $this->exc = new \Fobia\Api\Exception\Error("Неизвестная ошибка. (" . get_class($exc) . ")" );
+            $this->exc->errorOriginal = $exc->getMessage();
         }
+
+        $this->log();
 
         if ($this->exc) {
             Log::error("[API]:: (" . get_class($this->exc) . ") " . $this->exc->getMessage());
@@ -150,6 +163,8 @@ abstract class Method
      * Ignores validation errors.
      *
      * This is mainly useful for the help command.
+     *
+     * @return void
      */
     public function ignoreValidationErrors()
     {
@@ -158,6 +173,8 @@ abstract class Method
 
     /**
      * Configures the current command.
+     *
+     * @return void
      */
     protected function configure()
     {
@@ -166,13 +183,15 @@ abstract class Method
 
     /**
      * Initializes the command just after the input has been validated.
+     *
+     * @return void
      */
     protected function initialize()
     {
         $params     = $this->params;
         $definition = $this->definition;
-
         $args = array();
+
         foreach ($definition as $key => $value) {
             if (array_key_exists($key, $params)) {
                 $args[$key] = $params[$key];
@@ -207,9 +226,6 @@ abstract class Method
                     if( !call_user_func_array($cb, array($args[$key])) ) {
                         throw new \Fobia\Api\Exception\BadRequest($key);
                     }
-                    // if ( ! $cb($args[$key]) ) {
-                    //     throw new \Api\Exception\BadRequest($key);
-                    // }
                 } else {
                     throw new \Fobia\Api\Exception\ServerError('Не верный формат callable - ' . $cb);
                 }
@@ -278,6 +294,24 @@ abstract class Method
     }
 
     /**
+     * Устанавить атрибуты параметру
+     * # array (name, mode, default, parse, assert)
+     *
+     * @param array $options
+     */
+    protected function setAddDefinition(array $options)
+    {
+        $options_set = array(
+            'name'    => $options[0],
+            'mode'    => @$options[1],
+            'default' => @$options[2],
+            'parse'   => @$options[3],
+            'assert'  => @$options[4],
+        );
+        $this->setDefinition($options_set);
+    }
+
+    /**
      * Список определений параметров метода
      *
      * @return array
@@ -328,6 +362,32 @@ abstract class Method
         $this->name = $name;
     }
 
+    protected function log()
+    {
+        $app = \Fobia\Base\Application::getInstance();
+        $login = $app->auth->getUser()->getUsername();
+        if (!$login) {
+            $login = 'guest';
+        }
+        $str = "[".date(\CDateTime::ATOM)."]"
+                . " - " .$app->request->getClientIp()
+                // . " - " . $app->request->getPath() . "?" . $app->request->getQueryString()
+                . " - " . $login
+                . " - " . $this->getName()
+                . " " . json_encode($this->getDefinitionParams())
+                . PHP_EOL
+                ;
+
+        $file = LOGS_DIR . '/api.log';
+
+        file_put_contents($file, $str, FILE_APPEND);
+    }
+
+    /**
+     * Название метода
+     *
+     * @return string
+     */
     public function getName()
     {
         if ($this->name) {

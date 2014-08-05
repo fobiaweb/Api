@@ -15,5 +15,6 @@ namespace Fobia\Api\Exception;
  */
 class Error extends \Exception implements IApiException
 {
+    public $errorOriginal;
 }
 

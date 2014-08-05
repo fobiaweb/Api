@@ -21,20 +21,19 @@ class FileMethod extends Method
 {
     protected $file;
 
+    public function __construct($file, $params = null, $options = null)
+    {
+        $this->file = $file;
+        parent::__construct($params, $options);
+    }
+
     protected function configure()
     {
-        $options = $this->getOptions();
-        $this->file = $options['file'];
-
-        $this->setName($options['name']);
     }
 
     protected function execute()
     {
-        $p   = $this->getDefinitionParams();
-        $app = \App::instance();
-        $db  = $app->db;
-
+        $params = $this->getParams();
         $this->response = include $this->file;
     }
 }
